@@ -4,9 +4,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 
+import java.util.Map;
+
 @Service
 public class BeerClientImpl implements BeerClient {
 
+    public static final String BEER_PATH = "/api/v3/beer";
     private final WebClient webclient;
 
     public BeerClientImpl(WebClient.Builder webClientBuilder) {
@@ -16,7 +19,12 @@ public class BeerClientImpl implements BeerClient {
     }
 
     @Override
+    public Flux<Map> listBeersMap() {
+        return webclient.get().uri(BEER_PATH).retrieve().bodyToFlux(Map.class);
+    }
+
+    @Override
     public Flux<String> listBeers() {
-        return webclient.get().uri("/api/v3/beer").retrieve().bodyToFlux(String.class);
+        return webclient.get().uri(BEER_PATH).retrieve().bodyToFlux(String.class);
     }
 }
