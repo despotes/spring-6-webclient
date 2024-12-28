@@ -1,5 +1,6 @@
 package guru.springframework.client;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
@@ -21,6 +22,11 @@ public class BeerClientImpl implements BeerClient {
     @Override
     public Flux<Map> listBeersMap() {
         return webclient.get().uri(BEER_PATH).retrieve().bodyToFlux(Map.class);
+    }
+
+    @Override
+    public Flux<JsonNode> listBeersJsonNode() {
+        return webclient.get().uri(BEER_PATH).retrieve().bodyToFlux(JsonNode.class);
     }
 
     @Override
