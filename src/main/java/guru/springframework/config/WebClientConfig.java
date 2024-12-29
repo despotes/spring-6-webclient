@@ -1,4 +1,4 @@
-package guru.springframework.client;
+package guru.springframework.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.reactive.function.client.WebClientCustomizer;
