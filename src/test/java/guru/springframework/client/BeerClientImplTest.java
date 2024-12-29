@@ -15,6 +15,18 @@ class BeerClientImplTest {
     BeerClient client;
 
     @Test
+    void testListBeersByBeerStyle() {
+        AtomicBoolean called = new AtomicBoolean(false);
+        client.listBeersByBeerStyle("Pale Ale")
+                .subscribe(beerDTO -> {
+                    called.set(true);
+                    System.out.println(beerDTO.toString());
+                });
+
+        await().untilTrue(called);
+    }
+
+    @Test
     void testGetBeerById() {
         AtomicBoolean called = new AtomicBoolean(false);
         client.listBeersDto()
