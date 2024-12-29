@@ -19,4 +19,6 @@ public interface BeerClient {
     Mono<BeerDTO> getBeerById(String id);
 
     Flux<BeerDTO> listBeersByBeerStyle(String beerStyle);
+
+    Mono<BeerDTO> createBeer(BeerDTO beerDTO);
 }

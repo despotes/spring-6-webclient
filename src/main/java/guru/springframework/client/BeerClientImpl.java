@@ -2,12 +2,14 @@ package guru.springframework.client;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import guru.springframework.model.BeerDTO;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
-import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.Arrays;
 import java.util.Map;
 
 @Service
@@ -47,6 +49,20 @@ public class BeerClientImpl implements BeerClient {
                 .path(BEER_PATH)
                 .queryParam("beerStyle", beerStyle)
                 .build()).retrieve().bodyToFlux(BeerDTO.class);
+    }
+
+    @Override
+    public Mono<BeerDTO> createBeer(BeerDTO beerDTO) {
+        return webclient.post().uri(BEER_PATH)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Mono.just(beerDTO), BeerDTO.class)
+                .retrieve()
+                .toBodilessEntity()
+                .map(responseEntity -> {
+                    String location = responseEntity.getHeaders().get("Location").get(0);
+                    return location.split("/")[location.split("/").length - 1];
+                })
+                .flatMap(this::getBeerById);
     }
 
     @Override
