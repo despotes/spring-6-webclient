@@ -15,6 +15,18 @@ class BeerClientImplTest {
     BeerClient client;
 
     @Test
+    void testListBeersDto() {
+        AtomicBoolean called = new AtomicBoolean(false);
+        client.listBeersDto()
+                .subscribe(beerDTO -> {
+                    called.set(true);
+                    System.out.println(beerDTO.getBeerName());
+                });
+
+        await().untilTrue(called);
+    }
+
+    @Test
     void listBeersJson() {
         AtomicBoolean called = new AtomicBoolean(false);
         client.listBeersJsonNode()
